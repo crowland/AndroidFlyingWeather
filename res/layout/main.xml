@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent">
+
+  <TextView
+          android:id="@+id/label"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:text="Airport Identifier:"/>
+
+  <EditText
+          android:id="@+id/airportId"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:background="@android:drawable/editbox_background"
+          android:layout_below="@id/label"/>
+
+  <Button
+          android:id="@+id/goButton"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/airportId"
+          android:layout_alignParentRight="true"
+          android:layout_marginRight="10dip"
+          android:text="go"/>
+
+  <CheckBox
+          android:id="@+id/includeTafCB"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_toLeftOf="@id/goButton"
+          android:layout_alignTop="@id/goButton"
+          android:layout_marginRight="10dip"
+          android:text="Include TAF"/>
+
+  <CheckBox
+          android:id="@+id/decodeMetarCB"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_toLeftOf="@id/includeTafCB"
+          android:layout_alignTop="@id/includeTafCB"
+          android:layout_marginRight="10dip"
+          android:text="Decode"/>
+
+  <TextView
+          android:id="@+id/metarText"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/goButton"
+          android:scrollbars="vertical"/>
+
+  <TextView
+          android:id="@+id/tafText"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/metarText"
+          android:scrollbars="vertical"/>
+
+</RelativeLayout>
