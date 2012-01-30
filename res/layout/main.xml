@@ -2,12 +2,15 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="fill_parent"
-              android:layout_height="fill_parent">
+              android:layout_height="fill_parent"
+              android:background="#8fbc8f"
+              android:scrollbars="vertical">
 
   <TextView
           android:id="@+id/label"
           android:layout_width="fill_parent"
           android:layout_height="wrap_content"
+          android:textColor="#000000"
           android:text="Airport Identifier:"/>
 
   <EditText
@@ -24,7 +27,7 @@
           android:layout_below="@id/airportId"
           android:layout_alignParentRight="true"
           android:layout_marginRight="10dip"
-          android:text="go"/>
+          android:text="Go"/>
 
   <CheckBox
           android:id="@+id/includeTafCB"
@@ -33,7 +36,8 @@
           android:layout_toLeftOf="@id/goButton"
           android:layout_alignTop="@id/goButton"
           android:layout_marginRight="10dip"
-          android:text="Include TAF"/>
+          android:text="Include TAF"
+          android:textColor="#000000"/>
 
   <CheckBox
           android:id="@+id/decodeMetarCB"
@@ -42,20 +46,23 @@
           android:layout_toLeftOf="@id/includeTafCB"
           android:layout_alignTop="@id/includeTafCB"
           android:layout_marginRight="10dip"
-          android:text="Decode"/>
+          android:text="Decode"
+          android:textColor="#000000"/>
 
   <TextView
           android:id="@+id/metarText"
           android:layout_width="fill_parent"
           android:layout_height="wrap_content"
           android:layout_below="@id/goButton"
-          android:scrollbars="vertical"/>
+          android:scrollbars="vertical"
+          android:textColor="#000000"/>
 
   <TextView
           android:id="@+id/tafText"
           android:layout_width="fill_parent"
           android:layout_height="wrap_content"
           android:layout_below="@id/metarText"
-          android:scrollbars="vertical"/>
+          android:scrollbars="vertical"
+          android:textColor="#000000"/>
 
 </RelativeLayout>
