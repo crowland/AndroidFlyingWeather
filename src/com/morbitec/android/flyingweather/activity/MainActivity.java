@@ -2,6 +2,7 @@ package com.morbitec.android.flyingweather.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.AsyncTask;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -14,12 +15,21 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import java.util.StringTokenizer;
+
 public class MainActivity extends Activity
 {
   private static final String URL_METAR_RAW = "http://weather.noaa.gov/pub/data/observations/metar/stations/";
   private static final String URL_METAR_DECODED = "http://weather.noaa.gov/pub/data/observations/metar/decoded/";
   private static final String URL_TAF = "http://weather.noaa.gov/pub/data/forecasts/taf/stations/";
   private static final String URL_EXTENSION = ".TXT";
+
+  private static final String RESULT_SEPARATOR =
+"--------------------------------------------------";
+
+  private TextView wxText;
+  private CheckBox decodeCb;
+  private CheckBox includeTafCb;
   
   @Override
   protected void onCreate(Bundle savedInstanceState)
@@ -27,6 +37,10 @@ public class MainActivity extends Activity
     super.onCreate(savedInstanceState);
 
     setContentView(R.layout.main);
+
+    wxText = (TextView)findViewById(R.id.wxText);
+    decodeCb = (CheckBox)findViewById(R.id.decodeMetarCB);
+    includeTafCb = (CheckBox)findViewById(R.id.includeTafCB);
 
     _addAirportTextListener();
 
@@ -41,57 +55,29 @@ public class MainActivity extends Activity
   
   private void _addGoButtonClickListener()
   {
-    final Button searchBtn = (Button)findViewById(R.id.goButton);
-    searchBtn.setOnClickListener(new Button.OnClickListener()
+    final Button goBtn = (Button)findViewById(R.id.goButton);
+    goBtn.setOnClickListener(new Button.OnClickListener()
     {
       @Override
       public void onClick(View view)
       {
-        final TextView metarTxt = (TextView)findViewById(R.id.metarText);
-        metarTxt.setText("");
-
-        final TextView tafTxt = (TextView)findViewById(R.id.tafText);
-        tafTxt.setText("");
+        wxText.setText("");
 
         final EditText airportTxt = (EditText)findViewById(R.id.airportId);
-        String airportId = airportTxt.getText().toString();        
+        String airportIds = airportTxt.getText().toString();
         
-        final CheckBox decodeCb = (CheckBox)findViewById(R.id.decodeMetarCB);
-        final CheckBox includeTafCb = (CheckBox)findViewById(R.id.includeTafCB);
-        
-        String metarRequest = null;
-        if (decodeCb.isChecked())
-          metarRequest = URL_METAR_DECODED + airportId.toUpperCase() + URL_EXTENSION;
-        else
-          metarRequest = URL_METAR_RAW + airportId.toUpperCase() + URL_EXTENSION;
-        
-        String metarResult = null;
-        try
+        if (airportIds == null || airportIds.length() < 1)
         {
-          metarResult = _callWebSvc(metarRequest);
+          wxText.setText("Please enter at least one airport identifier.");
+          return;
         }
-        catch (Throwable t)
-        {
-          metarResult = "Metar not available";
-        }        
         
-        metarTxt.setText(metarResult);
-        
-        if (includeTafCb.isChecked())
+        String[] airportIdArray = airportIds.split(" ");
+
+        for (int i = 0; i < airportIdArray.length; i++)
         {
-          String tafRequest = URL_TAF + airportId.toUpperCase() + URL_EXTENSION;
-          String tafResult = null;
-
-          try
-          {
-            tafResult = _callWebSvc(tafRequest);
-          }
-          catch (Throwable t)
-          {
-            tafResult = "TAF not available";
-          }
-
-          tafTxt.setText(tafResult);
+          GetWeatherTask getWeatherTask = new GetWeatherTask();
+          getWeatherTask.execute(new String[]{airportIdArray[i]});
         }
       }
     });
@@ -111,17 +97,71 @@ public class MainActivity extends Activity
     });
   }
 
-  private String _callWebSvc(String query) throws Exception
+
+  //----------------- private async tasks -----------------
+
+  private class GetWeatherTask extends AsyncTask<String, Void, String>
   {
-    HttpClient client = new DefaultHttpClient();
-    HttpGet get = new HttpGet(query);
-    get.addHeader("deviceid", "12345");
-    ResponseHandler<String> handler = new BasicResponseHandler();
-    String result = null;
+    @Override
+    protected void onPostExecute(String s)
+    {
+      wxText.append(s);
+    }
 
-    result = client.execute(get, handler);
-    client.getConnectionManager().shutdown();
+    @Override
+    protected String doInBackground(String... strings)
+    {
+      String airportId = strings[0].trim().toUpperCase();
 
-    return result;
+      StringBuilder wxResult = new StringBuilder();
+
+      String metarRequest = null;
+      if (decodeCb.isChecked())
+        metarRequest = URL_METAR_DECODED + airportId + URL_EXTENSION;
+      else
+        metarRequest = URL_METAR_RAW + airportId + URL_EXTENSION;
+
+      try
+      {
+        wxResult.append(_callWebSvc(metarRequest));
+      }
+      catch (Throwable t)
+      {
+        wxResult.append("METAR not available for " + airportId);
+      }
+
+      if (includeTafCb.isChecked())
+      {
+        wxResult.append("\n");
+
+        String tafRequest = URL_TAF + airportId + URL_EXTENSION;
+        try
+        {
+          wxResult.append(_callWebSvc(tafRequest));
+        }
+        catch (Throwable t)
+        {
+          wxResult.append("TAF not available for " + airportId);
+        }
+      }
+
+      wxResult.append("\n" + RESULT_SEPARATOR + "\n\n");
+
+      return wxResult.toString();
+    }
+
+    private String _callWebSvc(String query) throws Exception
+    {
+      HttpClient client = new DefaultHttpClient();
+      HttpGet get = new HttpGet(query);
+      get.addHeader("deviceid", "12345");
+      ResponseHandler<String> handler = new BasicResponseHandler();
+      String result = null;
+
+      result = client.execute(get, handler);
+      client.getConnectionManager().shutdown();
+
+      return result;
+    }
   }
 }

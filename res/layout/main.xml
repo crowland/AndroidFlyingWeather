@@ -1,68 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:background="#8fbc8f"
-              android:scrollbars="vertical">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/wxTextScrollView"
+    android:layout_height="fill_parent"
+    android:layout_width="fill_parent"
+    android:fillViewport="true">
 
-  <TextView
-          android:id="@+id/label"
-          android:layout_width="fill_parent"
-          android:layout_height="wrap_content"
-          android:textColor="#000000"
-          android:text="Airport Identifier:"/>
+  <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#8fbc8f">
 
-  <EditText
-          android:id="@+id/airportId"
-          android:layout_width="fill_parent"
-          android:layout_height="wrap_content"
-          android:background="@android:drawable/editbox_background"
-          android:layout_below="@id/label"/>
+    <TextView
+      android:id="@+id/label"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:textColor="#000000"
+      android:text="Airport Identifier:"/>
 
-  <Button
-          android:id="@+id/goButton"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_below="@id/airportId"
-          android:layout_alignParentRight="true"
-          android:layout_marginRight="10dip"
-          android:text="Go"/>
+    <EditText
+      android:id="@+id/airportId"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:background="@android:drawable/editbox_background"
+      android:layout_below="@id/label"/>
 
-  <CheckBox
-          android:id="@+id/includeTafCB"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_toLeftOf="@id/goButton"
-          android:layout_alignTop="@id/goButton"
-          android:layout_marginRight="10dip"
-          android:text="Include TAF"
-          android:textColor="#000000"/>
+    <Button
+      android:id="@+id/goButton"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/airportId"
+      android:layout_alignParentRight="true"
+      android:layout_marginRight="10dip"
+      android:text="Go"/>
 
-  <CheckBox
-          android:id="@+id/decodeMetarCB"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_toLeftOf="@id/includeTafCB"
-          android:layout_alignTop="@id/includeTafCB"
-          android:layout_marginRight="10dip"
-          android:text="Decode"
-          android:textColor="#000000"/>
+    <CheckBox
+      android:id="@+id/includeTafCB"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_toLeftOf="@id/goButton"
+      android:layout_alignTop="@id/goButton"
+      android:layout_marginRight="10dip"
+      android:text="Include TAF"
+      android:textColor="#000000"/>
 
-  <TextView
-          android:id="@+id/metarText"
-          android:layout_width="fill_parent"
-          android:layout_height="wrap_content"
-          android:layout_below="@id/goButton"
-          android:scrollbars="vertical"
-          android:textColor="#000000"/>
+    <CheckBox
+      android:id="@+id/decodeMetarCB"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_toLeftOf="@id/includeTafCB"
+      android:layout_alignTop="@id/goButton"
+      android:layout_marginRight="10dip"
+      android:text="Decode"
+      android:textColor="#000000"/>
 
-  <TextView
-          android:id="@+id/tafText"
-          android:layout_width="fill_parent"
-          android:layout_height="wrap_content"
-          android:layout_below="@id/metarText"
-          android:scrollbars="vertical"
-          android:textColor="#000000"/>
+    <TextView
+      android:id="@+id/wxText"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/goButton"
+      android:scrollbars="vertical"
+      android:textColor="#000000"/>
 
-</RelativeLayout>
+  </RelativeLayout>
+
+</ScrollView>
