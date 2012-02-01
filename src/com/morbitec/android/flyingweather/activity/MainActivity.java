@@ -25,7 +25,7 @@ public class MainActivity extends Activity
   private static final String URL_EXTENSION = ".TXT";
 
   private static final String RESULT_SEPARATOR =
-"--------------------------------------------------";
+"__________________________________________________";
 
   private TextView wxText;
   private CheckBox decodeCb;
@@ -121,9 +121,11 @@ public class MainActivity extends Activity
       else
         metarRequest = URL_METAR_RAW + airportId + URL_EXTENSION;
 
+      wxResult.append(airportId).append("\n\n");
+
       try
       {
-        wxResult.append(_callWebSvc(metarRequest));
+        wxResult.append("METAR\n").append(_callWebSvc(metarRequest));
       }
       catch (Throwable t)
       {
@@ -132,7 +134,7 @@ public class MainActivity extends Activity
 
       if (includeTafCb.isChecked())
       {
-        wxResult.append("\n");
+        wxResult.append("\nTAF\n");
 
         String tafRequest = URL_TAF + airportId + URL_EXTENSION;
         try
