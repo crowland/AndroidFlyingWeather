@@ -63,7 +63,7 @@ public class MainActivity extends Activity
       {
         wxText.setText("");
 
-        final EditText airportTxt = (EditText)findViewById(R.id.airportId);
+        final EditText airportTxt = (EditText)findViewById(R.id.airportIds);
         String airportIds = airportTxt.getText().toString();
         
         if (airportIds == null || airportIds.length() < 1)
@@ -85,7 +85,7 @@ public class MainActivity extends Activity
 
   private void _addAirportTextListener()
   {
-    final EditText airportText = (EditText)findViewById(R.id.airportId);
+    final EditText airportText = (EditText)findViewById(R.id.airportIds);
 
     airportText.setOnClickListener(new EditText.OnClickListener()
     {
